@@ -94,10 +94,10 @@ class HomeController extends GetxController {
             accountList[index1].monthlyIncome + value.amount;
         income = accountList[index1].monthlyIncome;
 
-        accountList[index1].balance =
-            accountList[index1].balance + value.amount;
+        // accountList[index1].balance =
+        //     accountList[index1].balance + value.amount;
 
-        double balance = accountList[index1].balance;
+        // double balance = accountList[index1].balance;
 
         await walletDb.rawInsert(
             'UPDATE Account SET monthly_income=? WHERE account_id=$accountId',
@@ -106,7 +106,7 @@ class HomeController extends GetxController {
         //     'UPDATE Account SET account_balance=? WHERE account_id=$accountId',
         //     [balance]);
 
-        print('aaa income=$income bal=$balance');
+        // print('aaa income=$income bal=$balance');
       } else {
         // accountList[index1].monthlyExpesne =
         //     accountList[index1].monthlyExpesne + value.amount;
@@ -116,11 +116,11 @@ class HomeController extends GetxController {
             accountList[index1].monthlyExpesne + value.amount;
         expense = accountList[index1].monthlyExpesne;
 
-        accountList[index1].balance =
-            accountList[index1].balance - value.amount;
+        // accountList[index1].balance =
+        //     accountList[index1].balance - value.amount;
 
-        double balance = accountList[index1].balance;
-        print('aaa income=$income bal=$balance');
+        // double balance = accountList[index1].balance;
+        // print('aaa income=$income bal=$balance');
 
         await walletDb.rawInsert(
             'UPDATE Account SET monthly_expense = ?  WHERE account_id=$accountId',
