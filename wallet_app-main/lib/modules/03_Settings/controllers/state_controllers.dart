@@ -32,6 +32,10 @@ class SettingsController extends GetxController {
       // accountNotifier.value.add(accountValue);
       accountList.add(accountValue);
     }
+
+    print(accountList[0].balance);
+    print('//////////////');
+
     // accountNotifier.notifyListeners();
     update();
   }

@@ -93,40 +93,18 @@ class HomeController extends GetxController {
     if (index1 != -1) {
       print(value.type);
       if (value.type == 'Income') {
-        // print(accountList[inde);
-        // accountList[index1].monthlyIncome =
-        //     accountList[index1].monthlyIncome + value.amount;
+     
         accountList[index1].monthlyIncome =
             accountList[index1].monthlyIncome + value.amount;
         income = accountList[index1].monthlyIncome;
 
-        accountList[index1].balance =
-            accountList[index1].balance + value.amount;
-        double newbalance = accountList[index1].balance;
+        final values = await walletDb.rawQuery('SELECT * FROM Account WHERE account_id=$accountId');
+        values.forEach((map) {
+      final newvalue = AccountModel.fromMap(map);
+      accountDataList.insert(0, newvalue);
+    });
 
-
-      //  double newbalance = accountDataList[0].balance + value.amount;
-
-       print(value.type);
-        // print(values);
-      print('///////////////////////////////////');
-
-        
-        // accountList[index1].balance =
-        //     accountList[index1].balance + value.amount;
-        //     balance=accountList[index1].balance;
-
-        // double balance = accountList[index1].balance;
-
-      //   final values = await walletDb.rawQuery('SELECT * FROM Account WHERE account_id=$accountId');
-        
-
-    //    await db.rawUpdate('''
-    // UPDATE Account
-    // account_balance = ?, monthly_income = ? 
-    // WHERE _id = ?
-    // ''', 
-    // ['Susan', 13, 1]);
+         double newbalance = accountDataList[0].balance + value.amount;
 
 
         await walletDb.rawInsert(
@@ -135,34 +113,32 @@ class HomeController extends GetxController {
               newbalance,
               income
               ]);
-
-       
-        // await walletDb.rawInsert(
-        //     'UPDATE Account SET account_balance=? WHERE account_id=$accountId',
-        //     [balance]);
-
-        // print('aaa income=$income bal=$balance');
+                 Get.find<SettingsController>().getAccountData();
       } else {
-        // accountList[index1].monthlyExpesne =
-        //     accountList[index1].monthlyExpesne + value.amount;
-        // expense = accountList[index1].monthlyExpesne;
+      
 
         accountList[index1].monthlyExpesne =
             accountList[index1].monthlyExpesne + value.amount;
         expense = accountList[index1].monthlyExpesne;
 
-        // accountList[index1].balance =
-        //     accountList[index1].balance - value.amount;
+        
+         final values = await walletDb.rawQuery('SELECT * FROM Account WHERE account_id=$accountId');
+        values.forEach((map) {
+      final newvalue = AccountModel.fromMap(map);
+      accountDataList.insert(0, newvalue);
+        
+    });
 
-        // double balance = accountList[index1].balance;
-        // print('aaa income=$income bal=$balance');
 
-        await walletDb.rawInsert(
-            'UPDATE Account SET monthly_expense = ?  WHERE account_id=$accountId',
-            [expense]);
-        // await walletDb.rawInsert(
-        //     'UPDATE Account SET account_balance = ? WHERE account_id=$accountId',
-        //     [balance]);
+         double newbalance = accountDataList[0].balance - value.amount;
+
+             await walletDb.rawInsert(
+            'UPDATE Account SET account_balance = ?, monthly_expense =? WHERE account_id =$accountId',
+            [
+              newbalance,
+              expense
+              ]);
+               Get.find<SettingsController>().getAccountData();
       }
     }
 
