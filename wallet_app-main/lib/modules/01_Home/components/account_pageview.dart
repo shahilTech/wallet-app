@@ -52,6 +52,10 @@ class AccountPageView extends StatelessWidget {
                       itemCount: setting.accountList.length,
                       itemBuilder: (BuildContext context, int itemIndex) {
                         final data = setting.accountList[itemIndex];
+
+                        print(data.monthlyExpesne);
+                        print(data.balance);
+                        print('//////////////////');
                         // Get.find<HomeController>()
                         //     .calculateIncomeAndExpense(data.accountId!);
 
@@ -96,8 +100,7 @@ class AccountPageView extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       const Text('Balance'),
-                                      Text(
-                                        "\₹${data.balance.toInt()}",
+                                      Text(data.balance.toString(),
                                         style: const TextStyle(
                                             fontSize: 28,
                                             fontWeight: FontWeight.bold),

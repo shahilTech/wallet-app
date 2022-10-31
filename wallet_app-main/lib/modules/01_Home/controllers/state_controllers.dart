@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:wallet_app/components/print.dart';
 import 'package:wallet_app/db/functions/db_function.dart';
+import 'package:wallet_app/model/accounts.dart';
 import 'package:wallet_app/model/transaction.dart';
 import 'package:wallet_app/modules/01_Home/models/amount_details.dart';
 import 'package:wallet_app/modules/01_Home/models/calcincome_expense.dart';
@@ -17,6 +18,7 @@ class HomeController extends GetxController {
   late List accountList = [];
   List<IncomeValues> incomeValuesList = [];
   List<ExpenseValues> expenseValuesList = [];
+  List<AccountModel> accountDataList = [];
 
   // List accountListH = Get.find<SettingsController>().accountList;
   // List categoryListH = Get.find<SettingsController>().categoryList;
@@ -81,11 +83,15 @@ class HomeController extends GetxController {
         ]);
     double income = 0;
     double expense = 0;
+    // double balance =0;
     int accountId = value.accountId;
     int index1 = accountList.indexWhere((element) {
       return element.accountId == value.accountId;
     });
+
+   
     if (index1 != -1) {
+      print(value.type);
       if (value.type == 'Income') {
         // print(accountList[inde);
         // accountList[index1].monthlyIncome =
@@ -94,14 +100,43 @@ class HomeController extends GetxController {
             accountList[index1].monthlyIncome + value.amount;
         income = accountList[index1].monthlyIncome;
 
+        accountList[index1].balance =
+            accountList[index1].balance + value.amount;
+        double newbalance = accountList[index1].balance;
+
+
+      //  double newbalance = accountDataList[0].balance + value.amount;
+
+       print(value.type);
+        // print(values);
+      print('///////////////////////////////////');
+
+        
         // accountList[index1].balance =
         //     accountList[index1].balance + value.amount;
+        //     balance=accountList[index1].balance;
 
         // double balance = accountList[index1].balance;
 
+      //   final values = await walletDb.rawQuery('SELECT * FROM Account WHERE account_id=$accountId');
+        
+
+    //    await db.rawUpdate('''
+    // UPDATE Account
+    // account_balance = ?, monthly_income = ? 
+    // WHERE _id = ?
+    // ''', 
+    // ['Susan', 13, 1]);
+
+
         await walletDb.rawInsert(
-            'UPDATE Account SET monthly_income=? WHERE account_id=$accountId',
-            [income]);
+            'UPDATE Account SET account_balance = ?, monthly_income =? WHERE account_id =$accountId',
+            [
+              newbalance,
+              income
+              ]);
+
+       
         // await walletDb.rawInsert(
         //     'UPDATE Account SET account_balance=? WHERE account_id=$accountId',
         //     [balance]);
@@ -130,6 +165,12 @@ class HomeController extends GetxController {
         //     [balance]);
       }
     }
+
+     final values = await walletDb.rawQuery('SELECT * FROM Account WHERE account_id=$accountId');
+    values.forEach((map) {
+      final accountData = AccountModel.fromMap(map);
+      accountDataList.insert(0, accountData);
+    });
 
     transactionListDetails();
     // getAllTransaction();
@@ -217,6 +258,7 @@ class HomeController extends GetxController {
         accountList[index3].monthlyExpesne = expenseValuesList[0].sumAmount;
       }
     }
+
 
     update();
   }
